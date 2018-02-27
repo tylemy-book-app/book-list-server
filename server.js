@@ -15,6 +15,8 @@ app.use(cors());
 
 app.get('/', (req, res) => res.send('testing 1, 2, 3, 4'));
 
+app.get('*', (req, res) => res.redirect(CLIENT_URL));
+
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 // PORT=3000;
