@@ -14,7 +14,7 @@ client.connect();
 
 app.use(cors());
 
-app.get('/', (req, res) => res.send('testing 1, 2, 3, 4'));
+//app.get('/', (req, res) => res.send('testing 1, 2, 3, 4'));
 
 app.get('/api/v1/books', (req, res) => {
   client.query(
@@ -31,5 +31,5 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 // CLIENT_URL = http://localhost:8080
 
 // MACOS
-// DATABASE_URL = postgres://localhost:5432/book-list
-// book-list stands for the name of our database
+// DATABASE_URL = postgres://localhost:5432/books_app
+// books_app stands for the name of our database
