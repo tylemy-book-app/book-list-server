@@ -7,13 +7,21 @@ const pg = require('pg');
 const app = express();
 const PORT = process.env.PORT;
 const CLIENT_URL = process.env.CLIENT_URL;
+const DATABASE_URL = process.env.DATABASE_URL;
 
-const client = new pg.Client(process.env.DATABASE_URL);
+const client = new pg.Client(DATABASE_URL);
 client.connect();
 
 app.use(cors());
 
 app.get('/', (req, res) => res.send('testing 1, 2, 3, 4'));
+
+app.get('/api/v1/books', (req, res) => {
+  client.query(
+    `SELECT book_id, author, title, image_url FROM books;`)
+    .then(result => res.send(result.rows))
+    .catch(console.error);
+});
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
 
