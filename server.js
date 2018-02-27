@@ -17,3 +17,9 @@ app.get('/', (req, res) => res.send('testing 1, 2, 3, 4'));
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
+// PORT=3000;
+// CLIENT_URL = http://localhost:8080
+
+// MACOS
+// DATABASE_URL = postgres://localhost:5432/book-list
+// book-list stands for the name of our database
