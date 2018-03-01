@@ -41,6 +41,20 @@ app.post('/api/v1/books', bodyParser, (req, res) => {
     .catch(err => console.error(err));
 });
 
+app.put('api/v1/books/:id', bodyParser, (req, res) => {
+  let {title, author, isbn, image_url, description} = req.body;
+  client.query(`
+  UPDATE books
+  SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5
+  WHERE book_id=$6;
+  `,
+  [
+    title, author, isbn, image_url, description, req.params.id
+  ])
+    .then(() => res.sendStatus(201))
+    .catch(console.log);
+});
+
 loadDB();
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
