@@ -43,8 +43,7 @@ app.post('/api/v1/books', bodyParser, (req, res) => {
 
 app.delete('/api/v1/books/:id', (req, res) => {
   client.query(
-    'DELETE FROM books WHERE book_id=$1;',
-    [req.params.id])
+    `DELETE FROM books WHERE book_id=${req.params.id};`)
     .then(() => res.send('Delete complete'))
     .catch(err => console.error(err));
 });
