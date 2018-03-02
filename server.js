@@ -27,7 +27,7 @@ app.get('/api/v1/books/:id', (req, res) => {
   client.query(
     `SELECT * FROM books WHERE book_id=${req.params.id};`)
     .then(results => res.send(results.rows))
-    .catch(console.error);
+    .catch(err => console.error(err));
 });
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
@@ -53,6 +53,13 @@ app.put('api/v1/books/:id', bodyParser, (req, res) => {
   ])
     .then(() => res.sendStatus(201))
     .catch(console.log);
+});
+
+app.delete('/api/v1/books/:id', (req, res) => {
+  client.query(
+    `DELETE FROM books WHERE book_id=${req.params.id};`)
+    .then(() => res.send('Delete complete'))
+    .catch(err => console.error(err));
 });
 
 loadDB();
