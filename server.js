@@ -10,7 +10,9 @@ const app = express();
 const PORT = process.env.PORT;
 const CLIENT_URL = process.env.CLIENT_URL;
 const DATABASE_URL = process.env.DATABASE_URL;
+const TOKEN = process.env.TOKEN;
 
+console.log(TOKEN + 'is the token in env');
 const client = new pg.Client(DATABASE_URL);
 client.connect();
 
@@ -28,6 +30,12 @@ app.get('/api/v1/books/:id', (req, res) => {
     `SELECT * FROM books WHERE book_id=${req.params.id};`)
     .then(results => res.send(results.rows))
     .catch(err => console.error(err));
+});
+
+app.get('/admin', (req, res) => {
+  console.log(parseInt(TOKEN) === parseInt(req.query.tokenValue));
+  res.send(parseInt(TOKEN) === parseInt(req.query.tokenValue));
+  console.log(req.query.tokenValue);
 });
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
