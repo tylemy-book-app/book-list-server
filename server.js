@@ -10,7 +10,9 @@ const app = express();
 const PORT = process.env.PORT;
 const CLIENT_URL = process.env.CLIENT_URL;
 const DATABASE_URL = process.env.DATABASE_URL;
+const TOKEN = process.env.TOKEN;
 
+console.log(TOKEN + 'is the token in env');
 const client = new pg.Client(DATABASE_URL);
 client.connect();
 
@@ -30,6 +32,12 @@ app.get('/api/v1/books/:id', (req, res) => {
     .catch(err => console.error(err));
 });
 
+app.get('/admin', (req, res) => {
+  console.log(parseInt(TOKEN) === parseInt(req.query.tokenValue));
+  res.send(parseInt(TOKEN) === parseInt(req.query.tokenValue));
+  console.log(req.query.tokenValue);
+});
+
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
 
 app.post('/api/v1/books', bodyParser, (req, res) => {
@@ -41,16 +49,16 @@ app.post('/api/v1/books', bodyParser, (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.put('api/v1/books/:id', bodyParser, (req, res) => {
+app.put('/api/v1/books', bodyParser, (req, res) => {
   let {title, author, isbn, image_url, description} = req.body;
   client.query(`
   UPDATE books
   SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5
-  WHERE book_id=$6;
+  WHERE book_id=${req.body.book_id};
   `,
   [
-    title, author, isbn, image_url, description, req.params.id
-  ])
+    title, author, isbn, image_url, description] //req.params.id
+  )
     .then(() => res.sendStatus(201))
     .catch(console.log);
 });
